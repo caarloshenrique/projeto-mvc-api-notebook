@@ -5,9 +5,9 @@
  */
 package br.com.view;
 
-import br.com.dao.NotebookDao;
-import br.com.dao.NotebookDaoImpl;
-import br.com.model.Notebook;
+import br.com.dao.UsuarioDao;
+import br.com.dao.UsuarioDaoImpl;
+import br.com.model.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -16,19 +16,19 @@ import javax.swing.JOptionPane;
  *
  * @author Carlos
  */
-public class FrmCadNotebook extends javax.swing.JInternalFrame {
-
+public class FrmCadUsuario extends javax.swing.JInternalFrame {
+    
     int indice = 0;
-    List<Notebook> lista = new ArrayList<Notebook>();
-    NotebookDao notebookDao = new NotebookDaoImpl();
-
+    List<Usuario> lista = new ArrayList<Usuario>();
+    UsuarioDao usuarioDao = new UsuarioDaoImpl();
+    
     /**
-     * Creates new form FrmCadNotebook
+     * Creates new form FrmCadUsuario
      */
-    public FrmCadNotebook() {
+    public FrmCadUsuario() {
         initComponents();
         txtId.setEnabled(false);
-        lista = notebookDao.getNotebooks();
+        lista = usuarioDao.getUsuarios();
     }
 
     /**
@@ -40,19 +40,13 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grupoTipo = new javax.swing.ButtonGroup();
-        lblTitulo = new javax.swing.JLabel();
-        lblId = new javax.swing.JLabel();
-        lblModelo = new javax.swing.JLabel();
-        lblMarca = new javax.swing.JLabel();
-        lblSerie = new javax.swing.JLabel();
-        rbConvencional = new javax.swing.JRadioButton();
-        rbGamer = new javax.swing.JRadioButton();
-        lblTipoNotebook = new javax.swing.JLabel();
-        txtId = new javax.swing.JTextField();
-        txtModelo = new javax.swing.JTextField();
-        cbxMarca = new javax.swing.JComboBox<>();
-        txtSerie = new javax.swing.JFormattedTextField();
+        txtTitulo = new javax.swing.JLabel();
+        lblNome = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblSenha = new javax.swing.JLabel();
+        txtNome = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        txtSenha = new javax.swing.JPasswordField();
         btnPrimeiro = new javax.swing.JButton();
         btnAnterior = new javax.swing.JButton();
         btnProximo = new javax.swing.JButton();
@@ -61,54 +55,35 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        lblId = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(204, 204, 255));
+        setBackground(new java.awt.Color(102, 102, 102));
         setClosable(true);
-        setForeground(new java.awt.Color(204, 204, 255));
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Cadastro Notebooks");
+        setTitle("Cadastro Usuários");
 
-        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblTitulo.setText("Cadastro de Notebooks");
+        txtTitulo.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        txtTitulo.setForeground(new java.awt.Color(255, 153, 51));
+        txtTitulo.setText("Cadastro de Usuários");
 
-        lblId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblId.setText("Id:");
+        lblNome.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        lblNome.setForeground(new java.awt.Color(255, 153, 51));
+        lblNome.setText("Nome:");
 
-        lblModelo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblModelo.setText("Modelo:");
+        lblEmail.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        lblEmail.setForeground(new java.awt.Color(255, 153, 51));
+        lblEmail.setText("E-mail:");
 
-        lblMarca.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblMarca.setText("Marca:");
+        lblSenha.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        lblSenha.setForeground(new java.awt.Color(255, 153, 51));
+        lblSenha.setText("Senha:");
 
-        lblSerie.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblSerie.setText("Série:");
-
-        rbConvencional.setBackground(new java.awt.Color(204, 204, 255));
-        grupoTipo.add(rbConvencional);
-        rbConvencional.setText("Convencional");
-        rbConvencional.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbConvencionalActionPerformed(evt);
-            }
-        });
-
-        rbGamer.setBackground(new java.awt.Color(204, 204, 255));
-        grupoTipo.add(rbGamer);
-        rbGamer.setText("Gamer");
-
-        lblTipoNotebook.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblTipoNotebook.setText("Tipo de Notebook:");
-
-        cbxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecionar--", "Acer", "Apple", "Dell", "Lenovo", "Sony" }));
-
-        try {
-            txtSerie.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
+        btnPrimeiro.setBackground(new java.awt.Color(255, 153, 51));
+        btnPrimeiro.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnPrimeiro.setForeground(new java.awt.Color(255, 255, 255));
         btnPrimeiro.setText("|<");
         btnPrimeiro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,6 +91,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAnterior.setBackground(new java.awt.Color(255, 153, 51));
+        btnAnterior.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAnterior.setForeground(new java.awt.Color(255, 255, 255));
         btnAnterior.setText("<<");
         btnAnterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +101,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
+        btnProximo.setBackground(new java.awt.Color(255, 153, 51));
+        btnProximo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnProximo.setForeground(new java.awt.Color(255, 255, 255));
         btnProximo.setText(">>");
         btnProximo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +111,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
+        btnUltimo.setBackground(new java.awt.Color(255, 153, 51));
+        btnUltimo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnUltimo.setForeground(new java.awt.Color(255, 255, 255));
         btnUltimo.setText(">|");
         btnUltimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,7 +121,10 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
-        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_adicionar_black.png"))); // NOI18N
+        btnNovo.setBackground(new java.awt.Color(255, 153, 51));
+        btnNovo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnNovo.setForeground(new java.awt.Color(255, 255, 255));
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_adicionar_white.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +132,10 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_salvar_black.png"))); // NOI18N
+        btnSalvar.setBackground(new java.awt.Color(255, 153, 51));
+        btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_salvar_white.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,13 +143,23 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_editar_black.png"))); // NOI18N
+        btnEditar.setBackground(new java.awt.Color(255, 153, 51));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_editar_white.png"))); // NOI18N
         btnEditar.setText("Editar");
 
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_excluir_black.png"))); // NOI18N
+        btnExcluir.setBackground(new java.awt.Color(255, 153, 51));
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_excluir_white.png"))); // NOI18N
         btnExcluir.setText("Excluir");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-icon.png"))); // NOI18N
+        lblId.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
+        lblId.setForeground(new java.awt.Color(255, 153, 51));
+        lblId.setText("Id:");
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/user-icon.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -168,77 +168,72 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addComponent(lblTitulo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(164, 164, 164)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblModelo)
                             .addComponent(lblId)
-                            .addComponent(lblMarca)
-                            .addComponent(lblSerie)
-                            .addComponent(lblTipoNotebook)
-                            .addComponent(txtModelo)
-                            .addComponent(txtId)
-                            .addComponent(txtSerie)
-                            .addComponent(cbxMarca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSenha)
+                            .addComponent(lblEmail)
+                            .addComponent(lblNome)
+                            .addComponent(txtNome)
+                            .addComponent(txtEmail)
+                            .addComponent(txtSenha)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnNovo)
-                                    .addComponent(btnPrimeiro))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnNovo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnSalvar))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnPrimeiro)
+                                        .addGap(48, 48, 48)
+                                        .addComponent(btnAnterior)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnProximo)
-                                        .addGap(57, 57, 57)
+                                    .addComponent(btnEditar)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addComponent(btnProximo)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
                                         .addComponent(btnUltimo))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnSalvar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnEditar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnExcluir))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(rbConvencional)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAnterior)
-                                    .addComponent(rbGamer))))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                            .addComponent(txtId)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(txtTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(169, 169, 169)
+                        .addComponent(jLabel2)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
+                .addComponent(txtTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblId)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(lblModelo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblMarca)
+                .addComponent(lblEmail)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblSerie)
+                .addComponent(lblSenha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(lblTipoNotebook)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbConvencional)
-                    .addComponent(rbGamer))
-                .addGap(18, 18, 18)
+                .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPrimeiro)
                     .addComponent(btnAnterior)
@@ -255,10 +250,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void rbConvencionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConvencionalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbConvencionalActionPerformed
 
     private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
         indice = 0;
@@ -290,18 +281,18 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         txtId.setText("");
-        txtModelo.setText("");
-        cbxMarca.setSelectedItem("--Selecionar--");
-        txtSerie.setText("");
+        txtNome.setText("");
+        txtEmail.setText("");
+        txtSenha.setText("");
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        Notebook notebook = new Notebook();
-        notebook.setModelo(txtModelo.getText());
-        notebook.setMarca(cbxMarca.getItemAt(indice));
-        notebook.setSerie(txtSerie.getText());
+        Usuario usuario = new Usuario();
+        usuario.setNome(txtNome.getText());
+        usuario.setEmail(txtEmail.getText());
+        usuario.setSenha(txtSenha.getText());
         
-        notebookDao.salvarNotebook(notebook);
+        usuarioDao.salvarUsuario(usuario);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
 
@@ -314,27 +305,22 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnUltimo;
-    private javax.swing.JComboBox<String> cbxMarca;
-    private javax.swing.ButtonGroup grupoTipo;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblId;
-    private javax.swing.JLabel lblMarca;
-    private javax.swing.JLabel lblModelo;
-    private javax.swing.JLabel lblSerie;
-    private javax.swing.JLabel lblTipoNotebook;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JRadioButton rbConvencional;
-    private javax.swing.JRadioButton rbGamer;
+    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblSenha;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtModelo;
-    private javax.swing.JFormattedTextField txtSerie;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JPasswordField txtSenha;
+    private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables
 
     public void mostrarDados() {
         txtId.setText("" + lista.get(indice).getId());
-        txtModelo.setText(lista.get(indice).getModelo());
-        cbxMarca.setSelectedItem(lista.get(indice).getMarca());
-        txtSerie.setText(lista.get(indice).getSerie());
+        txtNome.setText(lista.get(indice).getNome());
+        txtEmail.setText(lista.get(indice).getEmail());
+        txtSenha.setText(lista.get(indice).getSenha());
     }
-
 }

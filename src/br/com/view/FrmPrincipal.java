@@ -33,6 +33,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         menuCadastro = new javax.swing.JMenu();
         menuItemNotebook = new javax.swing.JMenuItem();
         menuItemMarcaNotebook = new javax.swing.JMenuItem();
+        menuItemUsuario = new javax.swing.JMenuItem();
         menuUtilitarios = new javax.swing.JMenu();
         menuItemCalculadora = new javax.swing.JMenuItem();
         menuItemBlocoNotas = new javax.swing.JMenuItem();
@@ -79,6 +80,15 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(menuItemMarcaNotebook);
+
+        menuItemUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        menuItemUsuario.setText("Usuário");
+        menuItemUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUsuarioActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(menuItemUsuario);
 
         menuPrincipal.add(menuCadastro);
 
@@ -132,6 +142,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
         marca.setVisible(true);
     }//GEN-LAST:event_menuItemMarcaNotebookActionPerformed
 
+    private void menuItemUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemUsuarioActionPerformed
+        FrmCadUsuario usuario  = new FrmCadUsuario();
+        Desktop.add(usuario);
+        usuario.setVisible(true);
+    }//GEN-LAST:event_menuItemUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -175,6 +191,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemCalculadora;
     private javax.swing.JMenuItem menuItemMarcaNotebook;
     private javax.swing.JMenuItem menuItemNotebook;
+    private javax.swing.JMenuItem menuItemUsuario;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenu menuSair;
     private javax.swing.JMenu menuUtilitarios;
