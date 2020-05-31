@@ -1,7 +1,7 @@
 # projeto-mvc-api-notebook
 :computer: Projeto Java para gerenciamento de notebooks
 
-## Tecnologias utilizadas :rocket: 
+## :rocket: Tecnologias utilizadas  
 
 O projeto foi feito utilizando as seguintes tecnologias:
 
