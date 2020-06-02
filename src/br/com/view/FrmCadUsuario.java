@@ -5,9 +5,11 @@
  */
 package br.com.view;
 
+import br.com.connection.Conexao;
 import br.com.dao.UsuarioDao;
 import br.com.dao.UsuarioDaoImpl;
 import br.com.model.Usuario;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,6 +21,7 @@ import javax.swing.JOptionPane;
 public class FrmCadUsuario extends javax.swing.JInternalFrame {
     
     int indice = 0;
+    int idincrement = 0;
     List<Usuario> lista = new ArrayList<Usuario>();
     UsuarioDao usuarioDao = new UsuarioDaoImpl();
     
@@ -27,8 +30,15 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
      */
     public FrmCadUsuario() {
         initComponents();
+        Connection conexao = new Conexao().getConnection();
+        
         txtId.setEnabled(false);
         lista = usuarioDao.getUsuarios();
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ainda não foram cadastrados usuários");
+        } else {
+            mostrarDados();
+        }
     }
 
     /**
@@ -148,12 +158,22 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         btnEditar.setForeground(new java.awt.Color(255, 255, 255));
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_editar_white.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setBackground(new java.awt.Color(255, 153, 51));
         btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_excluir_white.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         lblId.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         lblId.setForeground(new java.awt.Color(255, 153, 51));
@@ -270,8 +290,9 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         if (indice > lista.size() - 1) {
             indice--;
             JOptionPane.showMessageDialog(this, "Você já está no último registro");
+        } else {
+            mostrarDados();
         }
-        mostrarDados();
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
@@ -280,7 +301,8 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        txtId.setText("");
+        idincrement++;
+        txtId.setText(""+idincrement);
         txtNome.setText("");
         txtEmail.setText("");
         txtSenha.setText("");
@@ -288,12 +310,44 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Usuario usuario = new Usuario();
+        usuario.setId(Integer.parseInt(txtId.getText()));
         usuario.setNome(txtNome.getText());
         usuario.setEmail(txtEmail.getText());
         usuario.setSenha(txtSenha.getText());
         
         usuarioDao.salvarUsuario(usuario);
+        lista.clear();
+        lista = usuarioDao.getUsuarios();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Salvo com sucesso!");
+        mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Usuario usuario = new Usuario();
+        usuario.setId(Integer.parseInt(txtId.getText()));
+        usuario.setNome(txtNome.getText());
+        usuario.setEmail(txtEmail.getText());
+        usuario.setSenha(txtSenha.getText());
+        
+        usuarioDao.alterarUsuario(usuario);
+        lista.clear();
+        lista = usuarioDao.getUsuarios();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Editado com sucesso!");
+        mostrarDados();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int id = (Integer.parseInt(txtId.getText()));
+        
+        usuarioDao.excluirUsuario(id);
+        lista.clear();
+        lista = usuarioDao.getUsuarios();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
+        mostrarDados();
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

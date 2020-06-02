@@ -5,7 +5,10 @@
  */
 package br.com.view;
 
+import br.com.dao.UsuarioDaoImpl;
 import br.com.model.Usuario;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +22,7 @@ public class FrmLogin extends javax.swing.JFrame {
      */
     public FrmLogin() {
         initComponents();
+        this.getRootPane().setDefaultButton(btnEntrar);
     }
 
     /**
@@ -164,12 +168,18 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        Usuario usuario = new Usuario();
-        usuario.setNome("Carlos");
-        usuario.setSenha("123456");
-        usuario.setEmail("carlos.silva@novaandradina.org");
+         UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
+         List<Usuario> usuarios = new ArrayList<Usuario>();
+         usuarios = usuarioDao.getUsuarios();
+         
+         int contador = 0;
+         for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getNome().equals(txtNome.getText()) && usuarios.get(i).getSenha().equals(String.valueOf(txtSenha.getPassword()))) { 
+                contador++;
+            }
+         }
 
-        if (usuario.getNome().equals(txtNome.getText()) && usuario.getSenha().equals(String.valueOf(txtSenha.getPassword()))) {
+        if (contador > 0) {
             new FrmPrincipal().show();
             this.dispose();
         } else {

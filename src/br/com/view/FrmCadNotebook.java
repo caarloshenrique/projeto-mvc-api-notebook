@@ -5,9 +5,11 @@
  */
 package br.com.view;
 
+import br.com.connection.Conexao;
 import br.com.dao.NotebookDao;
 import br.com.dao.NotebookDaoImpl;
 import br.com.model.Notebook;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,6 +21,7 @@ import javax.swing.JOptionPane;
 public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
     int indice = 0;
+    int idincrement = 0;
     List<Notebook> lista = new ArrayList<Notebook>();
     NotebookDao notebookDao = new NotebookDaoImpl();
 
@@ -27,8 +30,15 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
      */
     public FrmCadNotebook() {
         initComponents();
-        txtId.setEnabled(false);
+        Connection conexao = new Conexao().getConnection();
+        
+        txtId.setEnabled(false);       
         lista = notebookDao.getNotebooks();
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ainda não foram cadastrados Notebooks");
+        } else {
+            mostrarDados();
+        }
     }
 
     /**
@@ -88,11 +98,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         rbConvencional.setBackground(new java.awt.Color(204, 204, 255));
         grupoTipo.add(rbConvencional);
         rbConvencional.setText("Convencional");
-        rbConvencional.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbConvencionalActionPerformed(evt);
-            }
-        });
 
         rbGamer.setBackground(new java.awt.Color(204, 204, 255));
         grupoTipo.add(rbGamer);
@@ -155,9 +160,19 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_editar_black.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_excluir_black.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-icon.png"))); // NOI18N
 
@@ -256,10 +271,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rbConvencionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConvencionalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbConvencionalActionPerformed
-
     private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
         indice = 0;
         mostrarDados();
@@ -279,8 +290,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         if (indice > lista.size() - 1) {
             indice--;
             JOptionPane.showMessageDialog(this, "Você já está no último registro");
+        } else {
+            mostrarDados();
         }
-        mostrarDados();
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
@@ -289,20 +301,66 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        txtId.setText("");
+        idincrement++;
+        txtId.setText(""+idincrement);
         txtModelo.setText("");
         cbxMarca.setSelectedItem("--Selecionar--");
         txtSerie.setText("");
+        grupoTipo.clearSelection();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         Notebook notebook = new Notebook();
+        notebook.setId(Integer.parseInt(txtId.getText()));
         notebook.setModelo(txtModelo.getText());
-        notebook.setMarca(cbxMarca.getItemAt(indice));
+        notebook.setMarca(cbxMarca.getSelectedItem().toString());
         notebook.setSerie(txtSerie.getText());
+        if (rbConvencional.isSelected()) {
+            notebook.setTipo(rbConvencional.getText());
+        }
+        if (rbGamer.isSelected()) {
+            notebook.setTipo(rbGamer.getText());
+        }
         
         notebookDao.salvarNotebook(notebook);
+        lista.clear();
+        lista = notebookDao.getNotebooks();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Salvo com sucesso!");
+        mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Notebook notebook = new Notebook();
+        notebook.setId(Integer.parseInt(txtId.getText()));
+        notebook.setModelo(txtModelo.getText());
+        notebook.setMarca(cbxMarca.getSelectedItem().toString());
+        notebook.setSerie(txtSerie.getText());
+        if (rbConvencional.isSelected()) {
+            notebook.setTipo(rbConvencional.getText());
+        }
+        if (rbGamer.isSelected()) {
+            notebook.setTipo(rbGamer.getText());
+        }
+        
+        notebookDao.alterarNotebook(notebook);
+        lista.clear();
+        lista = notebookDao.getNotebooks();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Editado com sucesso!");
+        mostrarDados();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int id = (Integer.parseInt(txtId.getText()));
+                
+        notebookDao.excluirNotebook(id);
+        lista.clear();
+        lista = notebookDao.getNotebooks();
+        indice = lista.size() - 1;
+        JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
+        mostrarDados();
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -335,6 +393,11 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         txtModelo.setText(lista.get(indice).getModelo());
         cbxMarca.setSelectedItem(lista.get(indice).getMarca());
         txtSerie.setText(lista.get(indice).getSerie());
+        if (lista.get(indice).getTipo().equals("Convencional")) {
+            rbConvencional.setSelected(true);
+        }
+        if (lista.get(indice).getTipo().equals("Gamer")) {
+            rbGamer.setSelected(true);
+        }
     }
-
 }
