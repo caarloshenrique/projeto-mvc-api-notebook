@@ -96,9 +96,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
         menuUtilitarios.setText("Utilitários");
 
         menuItemCalculadora.setText("Calculadora");
+        menuItemCalculadora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCalculadoraActionPerformed(evt);
+            }
+        });
         menuUtilitarios.add(menuItemCalculadora);
 
         menuItemBlocoNotas.setText("Bloco de notas");
+        menuItemBlocoNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemBlocoNotasActionPerformed(evt);
+            }
+        });
         menuUtilitarios.add(menuItemBlocoNotas);
 
         menuPrincipal.add(menuUtilitarios);
@@ -148,6 +158,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
         Desktop.add(usuario);
         usuario.setVisible(true);
     }//GEN-LAST:event_menuItemUsuarioActionPerformed
+
+    private void menuItemCalculadoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCalculadoraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemCalculadoraActionPerformed
+
+    private void menuItemBlocoNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemBlocoNotasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemBlocoNotasActionPerformed
 
     /**
      * @param args the command line arguments

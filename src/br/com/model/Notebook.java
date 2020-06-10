@@ -4,14 +4,14 @@ public class Notebook {
 
     private int id;
     private String modelo;
-    private String marca;
+    private int marca;
     private String serie;
     private String tipo;
 
     public Notebook() {
     }
 
-    public Notebook(int id, String modelo, String marca, String serie, String tipo) {
+    public Notebook(int id, String modelo, int marca, String serie, String tipo) {
         this.id = id;
         this.modelo = modelo;
         this.marca = marca;
@@ -35,11 +35,11 @@ public class Notebook {
         this.modelo = modelo;
     }
 
-    public String getMarca() {
+    public int getMarca() {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setMarca(int marca) {
         this.marca = marca;
     }
 

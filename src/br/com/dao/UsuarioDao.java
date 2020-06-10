@@ -12,5 +12,7 @@ public interface UsuarioDao {
     public void excluirUsuario(int id);
     
     public List<Usuario> getUsuarios();
+    
+    public boolean login(String login, String senha);
 
 }

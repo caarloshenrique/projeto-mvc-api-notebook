@@ -6,13 +6,17 @@
 package br.com.view;
 
 import br.com.connection.Conexao;
+import br.com.dao.MarcaDao;
+import br.com.dao.MarcaDaoImpl;
 import br.com.dao.NotebookDao;
 import br.com.dao.NotebookDaoImpl;
+import br.com.model.Marca;
 import br.com.model.Notebook;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,7 +27,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     int indice = 0;
     int idincrement = 0;
     List<Notebook> lista = new ArrayList<Notebook>();
+    List<Marca> marcas = new ArrayList<Marca>();
     NotebookDao notebookDao = new NotebookDaoImpl();
+    MarcaDao marcaDao = new MarcaDaoImpl();
 
     /**
      * Creates new form FrmCadNotebook
@@ -32,8 +38,10 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         initComponents();
         Connection conexao = new Conexao().getConnection();
         
-        txtId.setEnabled(false);       
+        txtId.setEnabled(false);
         lista = notebookDao.getNotebooks();
+        marcas = marcaDao.getMarcas();
+        preencheMarcas();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ainda não foram cadastrados Notebooks");
         } else {
@@ -71,7 +79,11 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        lblIconeNotebook = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbNotebooks = new javax.swing.JTable();
+        lblIconeLista = new javax.swing.JLabel();
+        lblTituloLista = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 204, 255));
         setClosable(true);
@@ -105,8 +117,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
         lblTipoNotebook.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblTipoNotebook.setText("Tipo de Notebook:");
-
-        cbxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecionar--", "Acer", "Apple", "Dell", "Lenovo", "Sony" }));
 
         try {
             txtSerie.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##")));
@@ -174,7 +184,30 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-icon.png"))); // NOI18N
+        lblIconeNotebook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-icon.png"))); // NOI18N
+
+        tbNotebooks.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Id", "Modelo", "Marca", "Série", "Tipo"
+            }
+        ));
+        tbNotebooks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNotebooksMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbNotebooks);
+
+        lblIconeLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-list.png"))); // NOI18N
+
+        lblTituloLista.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTituloLista.setText("Lista de Notebooks");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,7 +220,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
                         .addComponent(lblTitulo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(164, 164, 164)
-                        .addComponent(jLabel2))
+                        .addComponent(lblIconeNotebook))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -222,50 +255,67 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnAnterior)
                                     .addComponent(rbGamer))))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblIconeLista)
+                        .addGap(202, 202, 202))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTituloLista)
+                        .addGap(144, 144, 144))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(lblTituloLista))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblIconeNotebook)
+                    .addComponent(lblIconeLista))
+                .addGap(20, 20, 20)
                 .addComponent(lblId)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(lblModelo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblMarca)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblSerie)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(lblTipoNotebook)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbConvencional)
-                    .addComponent(rbGamer))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPrimeiro)
-                    .addComponent(btnAnterior)
-                    .addComponent(btnProximo)
-                    .addComponent(btnUltimo))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNovo)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnEditar)
-                    .addComponent(btnExcluir))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(lblModelo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblMarca)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblSerie)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(lblTipoNotebook)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbConvencional)
+                            .addComponent(rbGamer))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPrimeiro)
+                            .addComponent(btnAnterior)
+                            .addComponent(btnProximo)
+                            .addComponent(btnUltimo))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNovo)
+                            .addComponent(btnSalvar)
+                            .addComponent(btnEditar)
+                            .addComponent(btnExcluir)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -310,10 +360,12 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
+        
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
         notebook.setModelo(txtModelo.getText());
-        notebook.setMarca(cbxMarca.getSelectedItem().toString());
+        notebook.setMarca(MarcaId);
         notebook.setSerie(txtSerie.getText());
         if (rbConvencional.isSelected()) {
             notebook.setTipo(rbConvencional.getText());
@@ -326,15 +378,16 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         lista.clear();
         lista = notebookDao.getNotebooks();
         indice = lista.size() - 1;
-        JOptionPane.showMessageDialog(this, "Salvo com sucesso!");
         mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
+        
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
         notebook.setModelo(txtModelo.getText());
-        notebook.setMarca(cbxMarca.getSelectedItem().toString());
+        notebook.setMarca(MarcaId);
         notebook.setSerie(txtSerie.getText());
         if (rbConvencional.isSelected()) {
             notebook.setTipo(rbConvencional.getText());
@@ -347,7 +400,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         lista.clear();
         lista = notebookDao.getNotebooks();
         indice = lista.size() - 1;
-        JOptionPane.showMessageDialog(this, "Editado com sucesso!");
         mostrarDados();
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -358,9 +410,22 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         lista.clear();
         lista = notebookDao.getNotebooks();
         indice = lista.size() - 1;
-        JOptionPane.showMessageDialog(this, "Excluído com sucesso!");
         mostrarDados();
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void tbNotebooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNotebooksMouseClicked
+        int indiceDaTabela = tbNotebooks.getSelectedRow();
+        txtId.setText("" + tbNotebooks.getValueAt(indiceDaTabela, 0));
+        txtModelo.setText(tbNotebooks.getValueAt(indiceDaTabela, 1).toString());
+        cbxMarca.setSelectedItem(tbNotebooks.getValueAt(indiceDaTabela, 2).toString());
+        txtSerie.setText(tbNotebooks.getValueAt(indiceDaTabela, 3).toString());
+        if (lista.get(indiceDaTabela).getTipo().equals("Convencional")) {
+            rbConvencional.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
+        }
+        if (lista.get(indiceDaTabela).getTipo().equals("Gamer")) {
+            rbGamer.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
+        }
+    }//GEN-LAST:event_tbNotebooksMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -374,15 +439,19 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnUltimo;
     private javax.swing.JComboBox<String> cbxMarca;
     private javax.swing.ButtonGroup grupoTipo;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblIconeLista;
+    private javax.swing.JLabel lblIconeNotebook;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblSerie;
     private javax.swing.JLabel lblTipoNotebook;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTituloLista;
     private javax.swing.JRadioButton rbConvencional;
     private javax.swing.JRadioButton rbGamer;
+    private javax.swing.JTable tbNotebooks;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtModelo;
     private javax.swing.JFormattedTextField txtSerie;
@@ -391,7 +460,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     public void mostrarDados() {
         txtId.setText("" + lista.get(indice).getId());
         txtModelo.setText(lista.get(indice).getModelo());
-        cbxMarca.setSelectedItem(lista.get(indice).getMarca());
+        cbxMarca.setSelectedItem(buscarDescricaoMarca(lista.get(indice).getMarca()));
         txtSerie.setText(lista.get(indice).getSerie());
         if (lista.get(indice).getTipo().equals("Convencional")) {
             rbConvencional.setSelected(true);
@@ -399,5 +468,34 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         if (lista.get(indice).getTipo().equals("Gamer")) {
             rbGamer.setSelected(true);
         }
+        preencheTabela();
+    }
+    
+    public void preencheTabela() {
+        tbNotebooks.getColumnModel().getColumn(0).setPreferredWidth(20);
+        
+        DefaultTableModel modelo = (DefaultTableModel)tbNotebooks.getModel();
+        
+        modelo.setNumRows(0);
+        for(int i=0; i < lista.size(); i++) {
+            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getModelo(), lista.get(i).getMarca(), lista.get(i).getSerie(), lista.get(i).getTipo()});
+        }
+    }
+    
+    public void preencheMarcas() {
+        cbxMarca.addItem("--Selecione--");
+        for (int i = 0; i < marcas.size(); i++) {
+            cbxMarca.addItem(marcas.get(i).getDescricao());
+        }
+    }
+    
+    public String buscarDescricaoMarca(int id) {
+        String marca = null;
+        for (int i = 0; i < marcas.size(); i++) {
+            if (marcas.get(i).getId() == id) {
+                marca = marcas.get(i).getDescricao();
+            }
+        }
+        return marca;
     }
 }

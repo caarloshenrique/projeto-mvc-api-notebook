@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class NotebookDaoImpl implements NotebookDao {
 
@@ -21,11 +22,12 @@ public class NotebookDaoImpl implements NotebookDao {
         try {
             pstm = conexao.prepareStatement(sqlinsert);
             pstm.setString(1, notebook.getModelo());
-            pstm.setString(2, notebook.getMarca());
+            pstm.setInt(2, notebook.getMarca());
             pstm.setString(3, notebook.getSerie());
             pstm.setString(4, notebook.getTipo());
             pstm.execute();
             pstm.close();
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } catch (SQLException insert) {
             System.out.println("Erro: " + insert);
         } finally {
@@ -45,12 +47,13 @@ public class NotebookDaoImpl implements NotebookDao {
         try {
             pstm = conexao.prepareStatement(query);
             pstm.setString(1, notebook.getModelo());
-            pstm.setString(2, notebook.getMarca());
+            pstm.setInt(2, notebook.getMarca());
             pstm.setString(3, notebook.getSerie());
             pstm.setString(4, notebook.getTipo());
             pstm.setInt(5, notebook.getId());
             pstm.execute();
             pstm.close();
+            JOptionPane.showMessageDialog(null, "Editado com sucesso!");
         } catch (SQLException update) {
             System.out.println("Erro: " + update);
         } finally {
@@ -64,21 +67,28 @@ public class NotebookDaoImpl implements NotebookDao {
 
     @Override
     public void excluirNotebook(int id) {
-        conexao = new Conexao().getConnection();
-        String query = "DELETE FROM tb_notebook WHERE id=?";
-        try {
-            pstm = conexao.prepareStatement(query);
-            pstm.setInt(1, id);
-            pstm.execute();
-            pstm.close();
-        } catch (SQLException delete) {
-            System.out.println("Erro: " + delete);
-        } finally {
+        int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente exluir o registro?");
+        if (resp == 1) {
+            JOptionPane.showMessageDialog(null, "Você não excluiu o registro");
+        } else {
+            conexao = new Conexao().getConnection();
+            String query = "DELETE FROM tb_notebook WHERE id=?";
             try {
-                conexao.close();
-            } catch (SQLException deleteclose) {
-                System.out.println("Erro: " + deleteclose);
+                pstm = conexao.prepareStatement(query);
+                pstm.setInt(1, id);
+                pstm.execute();
+                pstm.close();
+                JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            } catch (SQLException delete) {
+                System.out.println("Erro: " + delete);
+            } finally {
+                try {
+                    conexao.close();
+                } catch (SQLException deleteclose) {
+                    System.out.println("Erro: " + deleteclose);
+                }
             }
+
         }
     }
 
@@ -96,7 +106,7 @@ public class NotebookDaoImpl implements NotebookDao {
                 Notebook notebook = new Notebook();
                 notebook.setId(rs.getInt("id"));
                 notebook.setModelo(rs.getString("modelo"));
-                notebook.setMarca(rs.getString("marca"));
+                notebook.setMarca(rs.getInt("marca"));
                 notebook.setSerie(rs.getString("serie"));
                 notebook.setTipo(rs.getString("tipo"));
 

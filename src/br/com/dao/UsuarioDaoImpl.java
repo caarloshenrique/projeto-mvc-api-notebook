@@ -8,12 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class UsuarioDaoImpl implements UsuarioDao {
-    
+
     Connection conexao = null;
     PreparedStatement pstm = null;
-    
+
     @Override
     public void salvarUsuario(Usuario usuario) {
         conexao = new Conexao().getConnection();
@@ -25,6 +26,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
             pstm.setString(3, usuario.getSenha());
             pstm.execute();
             pstm.close();
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } catch (SQLException insert) {
             System.out.println("Erro: " + insert);
         } finally {
@@ -35,7 +37,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
             }
         }
     }
-    
+
     @Override
     public void alterarUsuario(Usuario usuario) {
         conexao = new Conexao().getConnection();
@@ -48,6 +50,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
             pstm.setInt(4, usuario.getId());
             pstm.execute();
             pstm.close();
+            JOptionPane.showMessageDialog(null, "Editado com sucesso!");
         } catch (SQLException update) {
             System.out.println("Erro: " + update);
         } finally {
@@ -58,27 +61,33 @@ public class UsuarioDaoImpl implements UsuarioDao {
             }
         }
     }
-    
+
     @Override
     public void excluirUsuario(int id) {
-        conexao = new Conexao().getConnection();
-        String query = "DELETE FROM tb_usuario WHERE id=?";
-        try {
-            pstm = conexao.prepareStatement(query);
-            pstm.setInt(1, id);
-            pstm.execute();
-            pstm.close();
-        } catch (SQLException delete) {
-            System.out.println("Erro: " + delete);
-        } finally {
+        int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente exluir o registro?");
+        if (resp == 1) {
+            JOptionPane.showMessageDialog(null, "Você não excluiu o registro");
+        } else {
+            conexao = new Conexao().getConnection();
+            String query = "DELETE FROM tb_usuario WHERE id=?";
             try {
-                conexao.close();
-            } catch (SQLException deleteclose) {
-                System.out.println("Erro: " + deleteclose);
+                pstm = conexao.prepareStatement(query);
+                pstm.setInt(1, id);
+                pstm.execute();
+                pstm.close();
+                JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            } catch (SQLException delete) {
+                System.out.println("Erro: " + delete);
+            } finally {
+                try {
+                    conexao.close();
+                } catch (SQLException deleteclose) {
+                    System.out.println("Erro: " + deleteclose);
+                }
             }
         }
     }
-    
+
     @Override
     public List<Usuario> getUsuarios() {
         ResultSet rs = null;
@@ -95,9 +104,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
                 usuario.setNome(rs.getString("nome"));
                 usuario.setEmail(rs.getString("email"));
                 usuario.setSenha(rs.getString("senha"));
-                
+
                 lista.add(usuario);
-                
+
             } while (rs.next());
         } catch (SQLException errolistar) {
             System.out.println("Erro: " + errolistar);
@@ -110,7 +119,30 @@ public class UsuarioDaoImpl implements UsuarioDao {
         }
         return lista;
     }
-    
+
+    @Override
+    public boolean login(String login, String senha) {
+        String sql = "SELECT * FROM tb_usuario WHERE nome = ? AND senha = ?";
+        ResultSet rs;
+        try {
+            conexao = new Conexao().getConnection();
+            pstm = conexao.prepareStatement(sql);
+            this.pstm.setString(1, login);
+            this.pstm.setString(2, senha);
+
+            rs = pstm.executeQuery();
+
+            if (rs.first()) {
+                this.pstm.close();
+                conexao.close();
+                return true;
+            }
+        } catch (SQLException Erro) {
+            JOptionPane.showMessageDialog(null, "Usuário inválido!");
+        }
+        return false;
+    }
+
     public void criarUsuarioPadrao() {
         List<Usuario> usuarios = new ArrayList<Usuario>();
         usuarios = getUsuarios();
@@ -119,9 +151,9 @@ public class UsuarioDaoImpl implements UsuarioDao {
             novoUsuario.setNome("admin");
             novoUsuario.setEmail("admin@ifms.edu.br");
             novoUsuario.setSenha("admin");
-            
+
             salvarUsuario(novoUsuario);
         }
     }
-    
+
 }

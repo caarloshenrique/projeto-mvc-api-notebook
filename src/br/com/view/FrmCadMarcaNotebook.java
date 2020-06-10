@@ -5,17 +5,41 @@
  */
 package br.com.view;
 
+import br.com.connection.Conexao;
+import br.com.dao.MarcaDao;
+import br.com.dao.MarcaDaoImpl;
+import br.com.model.Marca;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Carlos
  */
 public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
+    
+    int indice = 0;
+    int idincrement = 0;
+    List<Marca> lista = new ArrayList<Marca>();
+    MarcaDao marcaDao = new MarcaDaoImpl();
 
     /**
      * Creates new form FrmCadMarcaNotebook
      */
     public FrmCadMarcaNotebook() {
         initComponents();
+        Connection conexao = new Conexao().getConnection();
+        
+        txtId.setEnabled(false);       
+        lista = marcaDao.getMarcas();
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ainda não foram cadastradas marcas de notebooks");
+        } else {
+            mostrarDados();
+        }
     }
 
     /**
@@ -27,21 +51,325 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitulo = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtDescricao = new javax.swing.JTextField();
+        lblId = new javax.swing.JLabel();
+        lblDescricao = new javax.swing.JLabel();
+        btnPrimeiro = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+        btnProximo = new javax.swing.JButton();
+        btnUltimo = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        lblIconeMarca = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbMarcas = new javax.swing.JTable();
+        lblTituloLista = new javax.swing.JLabel();
+        lblIconeLista = new javax.swing.JLabel();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
+        lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTitulo.setText("Cadastro de Marcas");
+
+        lblId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblId.setText("Id:");
+
+        lblDescricao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblDescricao.setText("Descrição:");
+
+        btnPrimeiro.setText("|<");
+        btnPrimeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrimeiroActionPerformed(evt);
+            }
+        });
+
+        btnAnterior.setText("<<");
+        btnAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorActionPerformed(evt);
+            }
+        });
+
+        btnProximo.setText(">>");
+        btnProximo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximoActionPerformed(evt);
+            }
+        });
+
+        btnUltimo.setText(">|");
+        btnUltimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUltimoActionPerformed(evt);
+            }
+        });
+
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_adicionar_black.png"))); // NOI18N
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_salvar_black.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_editar_black.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/img_excluir_black.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        lblIconeMarca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/marca-icon.png"))); // NOI18N
+
+        tbMarcas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Id", "Descrição"
+            }
+        ));
+        tbMarcas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMarcasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbMarcas);
+
+        lblTituloLista.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTituloLista.setText("Lista de Marcas");
+
+        lblIconeLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-list.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblId)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescricao)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(btnNovo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnPrimeiro)
+                                        .addGap(42, 42, 42)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAnterior)
+                                    .addComponent(btnSalvar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnProximo, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnExcluir)
+                                    .addComponent(btnUltimo)))
+                            .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTituloLista)
+                .addGap(163, 163, 163))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(166, 166, 166)
+                .addComponent(lblIconeMarca)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblIconeLista)
+                .addGap(205, 205, 205))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(lblTituloLista))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblIconeMarca)
+                    .addComponent(lblIconeLista))
+                .addGap(18, 18, 18)
+                .addComponent(lblId)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblDescricao)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPrimeiro)
+                            .addComponent(btnAnterior)
+                            .addComponent(btnProximo)
+                            .addComponent(btnUltimo))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNovo)
+                            .addComponent(btnSalvar)
+                            .addComponent(btnEditar)
+                            .addComponent(btnExcluir)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(56, 56, 56))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
+        indice = 0;
+        mostrarDados();
+    }//GEN-LAST:event_btnPrimeiroActionPerformed
+
+    private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
+        indice--;
+        if (indice < 0) {
+            indice++;
+            JOptionPane.showMessageDialog(this, "Você já está no primeiro registro");
+        }
+        mostrarDados();
+    }//GEN-LAST:event_btnAnteriorActionPerformed
+
+    private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
+        indice++;
+        if (indice > lista.size() - 1) {
+            indice--;
+            JOptionPane.showMessageDialog(this, "Você já está no último registro");
+        } else {
+            mostrarDados();
+        }
+    }//GEN-LAST:event_btnProximoActionPerformed
+
+    private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
+        indice = lista.size()-1;
+        mostrarDados();
+    }//GEN-LAST:event_btnUltimoActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        idincrement++;
+        txtId.setText(""+idincrement);
+        txtDescricao.setText("");
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        Marca marca = new Marca();
+        marca.setId(Integer.parseInt(txtId.getText()));
+        marca.setDescricao(txtDescricao.getText());
+        
+        marcaDao.salvarMarca(marca);
+        lista.clear();
+        lista = marcaDao.getMarcas();
+        indice = lista.size() - 1;
+        mostrarDados();
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        Marca marca = new Marca();
+        marca.setId(Integer.parseInt(txtId.getText()));
+        marca.setDescricao(txtDescricao.getText());
+        
+        marcaDao.alterarMarca(marca);
+        lista.clear();
+        lista = marcaDao.getMarcas();
+        indice = lista.size() - 1;
+        mostrarDados();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int id = (Integer.parseInt(txtId.getText()));
+                
+        marcaDao.excluirMarca(id);
+        lista.clear();
+        lista = marcaDao.getMarcas();
+        indice = lista.size() - 1;
+        mostrarDados();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void tbMarcasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMarcasMouseClicked
+        int indiceDaTabela = tbMarcas.getSelectedRow();
+        txtId.setText("" + tbMarcas.getValueAt(indiceDaTabela, 0));
+        txtDescricao.setText(tbMarcas.getValueAt(indiceDaTabela, 1).toString());
+    }//GEN-LAST:event_tbMarcasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnterior;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnPrimeiro;
+    private javax.swing.JButton btnProximo;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnUltimo;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDescricao;
+    private javax.swing.JLabel lblIconeLista;
+    private javax.swing.JLabel lblIconeMarca;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTituloLista;
+    private javax.swing.JTable tbMarcas;
+    private javax.swing.JTextField txtDescricao;
+    private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
+
+    public void mostrarDados() {
+        txtId.setText("" + lista.get(indice).getId());
+        txtDescricao.setText(lista.get(indice).getDescricao());
+        
+        preencheTabela();
+    }
+    
+    public void preencheTabela() {
+        tbMarcas.getColumnModel().getColumn(0).setPreferredWidth(20);
+        
+        DefaultTableModel modelo = (DefaultTableModel)tbMarcas.getModel();
+        
+        modelo.setNumRows(0);
+        for(int i=0; i < lista.size(); i++) {
+            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getDescricao()});
+        }
+    }
+
 }

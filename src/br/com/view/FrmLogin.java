@@ -5,6 +5,7 @@
  */
 package br.com.view;
 
+import br.com.dao.UsuarioDao;
 import br.com.dao.UsuarioDaoImpl;
 import br.com.model.Usuario;
 import java.util.ArrayList;
@@ -168,24 +169,16 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-         UsuarioDaoImpl usuarioDao = new UsuarioDaoImpl();
-         List<Usuario> usuarios = new ArrayList<Usuario>();
-         usuarios = usuarioDao.getUsuarios();
+         UsuarioDao usuarioDao = new UsuarioDaoImpl();
+         boolean existeCredenciais;
+         existeCredenciais = usuarioDao.login(txtNome.getText(), String.valueOf(txtSenha.getPassword()));
          
-         int contador = 0;
-         for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getNome().equals(txtNome.getText()) && usuarios.get(i).getSenha().equals(String.valueOf(txtSenha.getPassword()))) { 
-                contador++;
-            }
+         if (existeCredenciais) {
+             new FrmPrincipal().show();
+             this.dispose();
+         } else {
+             JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos", "Erro", JOptionPane.ERROR_MESSAGE);
          }
-
-        if (contador > 0) {
-            new FrmPrincipal().show();
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
