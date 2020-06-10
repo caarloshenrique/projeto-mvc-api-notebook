@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Carlos
  */
 public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
-    
+
     int indice = 0;
     int idincrement = 0;
     List<Marca> lista = new ArrayList<Marca>();
@@ -32,8 +32,8 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     public FrmCadMarcaNotebook() {
         initComponents();
         Connection conexao = new Conexao().getConnection();
-        
-        txtId.setEnabled(false);       
+
+        txtId.setEnabled(false);
         lista = marcaDao.getMarcas();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ainda não foram cadastradas marcas de notebooks");
@@ -162,6 +162,11 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
                 tbMarcasMouseClicked(evt);
             }
         });
+        tbMarcas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbMarcasKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbMarcas);
 
         lblTituloLista.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -282,13 +287,13 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
-        indice = lista.size()-1;
+        indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         idincrement++;
-        txtId.setText(""+idincrement);
+        txtId.setText("" + idincrement);
         txtDescricao.setText("");
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -296,7 +301,7 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
         Marca marca = new Marca();
         marca.setId(Integer.parseInt(txtId.getText()));
         marca.setDescricao(txtDescricao.getText());
-        
+
         marcaDao.salvarMarca(marca);
         lista.clear();
         lista = marcaDao.getMarcas();
@@ -308,7 +313,7 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
         Marca marca = new Marca();
         marca.setId(Integer.parseInt(txtId.getText()));
         marca.setDescricao(txtDescricao.getText());
-        
+
         marcaDao.alterarMarca(marca);
         lista.clear();
         lista = marcaDao.getMarcas();
@@ -318,7 +323,7 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
-                
+
         marcaDao.excluirMarca(id);
         lista.clear();
         lista = marcaDao.getMarcas();
@@ -327,10 +332,14 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void tbMarcasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMarcasMouseClicked
-        int indiceDaTabela = tbMarcas.getSelectedRow();
-        txtId.setText("" + tbMarcas.getValueAt(indiceDaTabela, 0));
-        txtDescricao.setText(tbMarcas.getValueAt(indiceDaTabela, 1).toString());
+        preencherDadosFormulario();
     }//GEN-LAST:event_tbMarcasMouseClicked
+
+    private void tbMarcasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbMarcasKeyReleased
+        if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
+            preencherDadosFormulario();
+        }
+    }//GEN-LAST:event_tbMarcasKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -357,19 +366,25 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     public void mostrarDados() {
         txtId.setText("" + lista.get(indice).getId());
         txtDescricao.setText(lista.get(indice).getDescricao());
-        
+
         preencheTabela();
     }
-    
+
     public void preencheTabela() {
         tbMarcas.getColumnModel().getColumn(0).setPreferredWidth(20);
-        
-        DefaultTableModel modelo = (DefaultTableModel)tbMarcas.getModel();
-        
+
+        DefaultTableModel modelo = (DefaultTableModel) tbMarcas.getModel();
+
         modelo.setNumRows(0);
-        for(int i=0; i < lista.size(); i++) {
+        for (int i = 0; i < lista.size(); i++) {
             modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getDescricao()});
         }
+    }
+
+    public void preencherDadosFormulario() {
+        int indiceDaTabela = tbMarcas.getSelectedRow();
+        txtId.setText("" + tbMarcas.getValueAt(indiceDaTabela, 0));
+        txtDescricao.setText(tbMarcas.getValueAt(indiceDaTabela, 1).toString());
     }
 
 }

@@ -20,19 +20,19 @@ import javax.swing.table.DefaultTableModel;
  * @author Carlos
  */
 public class FrmCadUsuario extends javax.swing.JInternalFrame {
-    
+
     int indice = 0;
     int idincrement = 0;
     List<Usuario> lista = new ArrayList<Usuario>();
     UsuarioDao usuarioDao = new UsuarioDaoImpl();
-    
+
     /**
      * Creates new form FrmCadUsuario
      */
     public FrmCadUsuario() {
         initComponents();
         Connection conexao = new Conexao().getConnection();
-        
+
         txtId.setEnabled(false);
         lista = usuarioDao.getUsuarios();
         if (lista.isEmpty()) {
@@ -202,6 +202,11 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
                 tbUsuariosMouseClicked(evt);
             }
         });
+        tbUsuarios.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbUsuariosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUsuarios);
 
         lblTituloLista.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
@@ -339,13 +344,13 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
-        indice = lista.size()-1;
+        indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         idincrement++;
-        txtId.setText(""+idincrement);
+        txtId.setText("" + idincrement);
         txtNome.setText("");
         txtEmail.setText("");
         txtSenha.setText("");
@@ -357,7 +362,7 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         usuario.setNome(txtNome.getText());
         usuario.setEmail(txtEmail.getText());
         usuario.setSenha(txtSenha.getText());
-        
+
         usuarioDao.salvarUsuario(usuario);
         lista.clear();
         lista = usuarioDao.getUsuarios();
@@ -371,7 +376,7 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         usuario.setNome(txtNome.getText());
         usuario.setEmail(txtEmail.getText());
         usuario.setSenha(txtSenha.getText());
-        
+
         usuarioDao.alterarUsuario(usuario);
         lista.clear();
         lista = usuarioDao.getUsuarios();
@@ -381,7 +386,7 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
-        
+
         usuarioDao.excluirUsuario(id);
         lista.clear();
         lista = usuarioDao.getUsuarios();
@@ -390,11 +395,14 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void tbUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUsuariosMouseClicked
-        int indiceDaTabela = tbUsuarios.getSelectedRow();
-        txtId.setText("" + tbUsuarios.getValueAt(indiceDaTabela, 0));
-        txtNome.setText(tbUsuarios.getValueAt(indiceDaTabela, 1).toString());
-        txtEmail.setText(tbUsuarios.getValueAt(indiceDaTabela, 2).toString());
+        preencherDadosFormulario();
     }//GEN-LAST:event_tbUsuariosMouseClicked
+
+    private void tbUsuariosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbUsuariosKeyReleased
+        if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
+            preencherDadosFormulario();
+        }
+    }//GEN-LAST:event_tbUsuariosKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -429,15 +437,22 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         txtSenha.setText(lista.get(indice).getSenha());
         preencheTabela();
     }
-    
+
     public void preencheTabela() {
         tbUsuarios.getColumnModel().getColumn(0).setPreferredWidth(20);
-        
-        DefaultTableModel modelo = (DefaultTableModel)tbUsuarios.getModel();
-        
+
+        DefaultTableModel modelo = (DefaultTableModel) tbUsuarios.getModel();
+
         modelo.setNumRows(0);
-        for(int i=0; i < lista.size(); i++) {
+        for (int i = 0; i < lista.size(); i++) {
             modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getNome(), lista.get(i).getEmail()});
         }
+    }
+
+    public void preencherDadosFormulario() {
+        int indiceDaTabela = tbUsuarios.getSelectedRow();
+        txtId.setText("" + tbUsuarios.getValueAt(indiceDaTabela, 0));
+        txtNome.setText(tbUsuarios.getValueAt(indiceDaTabela, 1).toString());
+        txtEmail.setText(tbUsuarios.getValueAt(indiceDaTabela, 2).toString());
     }
 }

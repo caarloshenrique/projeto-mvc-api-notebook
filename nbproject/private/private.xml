@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/dao/MarcaDao.java</file>
-            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/dao/NotebookDaoImpl.java</file>
             <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/executable/Executavel.java</file>
+            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/view/FrmCadMarcaNotebook.java</file>
+            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/view/FrmCadUsuario.java</file>
             <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/model/Notebook.java</file>
-            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/dao/MarcaDaoImpl.java</file>
-            <file>file:/C:/Users/Carlos/Documents/NetBeansProjects/ProjetoMVCAPI/src/br/com/view/FrmCadNotebook.java</file>
         </group>
     </open-files>
 </project-private>

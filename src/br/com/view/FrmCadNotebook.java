@@ -37,7 +37,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     public FrmCadNotebook() {
         initComponents();
         Connection conexao = new Conexao().getConnection();
-        
+
         txtId.setEnabled(false);
         lista = notebookDao.getNotebooks();
         marcas = marcaDao.getMarcas();
@@ -202,6 +202,11 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
                 tbNotebooksMouseClicked(evt);
             }
         });
+        tbNotebooks.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbNotebooksKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbNotebooks);
 
         lblIconeLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/images/notebook-list.png"))); // NOI18N
@@ -346,22 +351,22 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
-        indice = lista.size()-1;
+        indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         idincrement++;
-        txtId.setText(""+idincrement);
+        txtId.setText("" + idincrement);
         txtModelo.setText("");
-        cbxMarca.setSelectedItem("--Selecionar--");
+        cbxMarca.setSelectedItem("--Selecione--");
         txtSerie.setText("");
         grupoTipo.clearSelection();
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
-        
+
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
         notebook.setModelo(txtModelo.getText());
@@ -373,7 +378,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         if (rbGamer.isSelected()) {
             notebook.setTipo(rbGamer.getText());
         }
-        
+
         notebookDao.salvarNotebook(notebook);
         lista.clear();
         lista = notebookDao.getNotebooks();
@@ -383,7 +388,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
-        
+
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
         notebook.setModelo(txtModelo.getText());
@@ -395,7 +400,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         if (rbGamer.isSelected()) {
             notebook.setTipo(rbGamer.getText());
         }
-        
+
         notebookDao.alterarNotebook(notebook);
         lista.clear();
         lista = notebookDao.getNotebooks();
@@ -405,7 +410,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
-                
+
         notebookDao.excluirNotebook(id);
         lista.clear();
         lista = notebookDao.getNotebooks();
@@ -414,18 +419,14 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void tbNotebooksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNotebooksMouseClicked
-        int indiceDaTabela = tbNotebooks.getSelectedRow();
-        txtId.setText("" + tbNotebooks.getValueAt(indiceDaTabela, 0));
-        txtModelo.setText(tbNotebooks.getValueAt(indiceDaTabela, 1).toString());
-        cbxMarca.setSelectedItem(tbNotebooks.getValueAt(indiceDaTabela, 2).toString());
-        txtSerie.setText(tbNotebooks.getValueAt(indiceDaTabela, 3).toString());
-        if (lista.get(indiceDaTabela).getTipo().equals("Convencional")) {
-            rbConvencional.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
-        }
-        if (lista.get(indiceDaTabela).getTipo().equals("Gamer")) {
-            rbGamer.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
-        }
+        preencherDadosFormulario();
     }//GEN-LAST:event_tbNotebooksMouseClicked
+
+    private void tbNotebooksKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbNotebooksKeyReleased
+        if (evt.getKeyCode() == 38 || evt.getKeyCode() == 40) {
+            preencherDadosFormulario();
+        }
+    }//GEN-LAST:event_tbNotebooksKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -470,25 +471,25 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         }
         preencheTabela();
     }
-    
+
     public void preencheTabela() {
         tbNotebooks.getColumnModel().getColumn(0).setPreferredWidth(20);
-        
-        DefaultTableModel modelo = (DefaultTableModel)tbNotebooks.getModel();
-        
+
+        DefaultTableModel modelo = (DefaultTableModel) tbNotebooks.getModel();
+
         modelo.setNumRows(0);
-        for(int i=0; i < lista.size(); i++) {
-            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getModelo(), lista.get(i).getMarca(), lista.get(i).getSerie(), lista.get(i).getTipo()});
+        for (int i = 0; i < lista.size(); i++) {
+            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getModelo(), buscarDescricaoMarca(lista.get(i).getMarca()), lista.get(i).getSerie(), lista.get(i).getTipo()});
         }
     }
-    
+
     public void preencheMarcas() {
         cbxMarca.addItem("--Selecione--");
         for (int i = 0; i < marcas.size(); i++) {
             cbxMarca.addItem(marcas.get(i).getDescricao());
         }
     }
-    
+
     public String buscarDescricaoMarca(int id) {
         String marca = null;
         for (int i = 0; i < marcas.size(); i++) {
@@ -497,5 +498,19 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             }
         }
         return marca;
+    }
+
+    public void preencherDadosFormulario() {
+        int indiceDaTabela = tbNotebooks.getSelectedRow();
+        txtId.setText("" + tbNotebooks.getValueAt(indiceDaTabela, 0));
+        txtModelo.setText(tbNotebooks.getValueAt(indiceDaTabela, 1).toString());
+        cbxMarca.setSelectedItem(tbNotebooks.getValueAt(indiceDaTabela, 2).toString());
+        txtSerie.setText(tbNotebooks.getValueAt(indiceDaTabela, 3).toString());
+        if (lista.get(indiceDaTabela).getTipo().equals("Convencional")) {
+            rbConvencional.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
+        }
+        if (lista.get(indiceDaTabela).getTipo().equals("Gamer")) {
+            rbGamer.setText(tbNotebooks.getValueAt(indiceDaTabela, 4).toString());
+        }
     }
 }
