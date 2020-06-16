@@ -6,10 +6,8 @@
 package br.com.view;
 
 import br.com.connection.Conexao;
-import br.com.dao.MarcaDao;
-import br.com.dao.MarcaDaoImpl;
-import br.com.dao.NotebookDao;
-import br.com.dao.NotebookDaoImpl;
+import br.com.controller.MarcaController;
+import br.com.controller.NotebookController;
 import br.com.model.Marca;
 import br.com.model.Notebook;
 import java.sql.Connection;
@@ -28,8 +26,8 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     int idincrement = 0;
     List<Notebook> lista = new ArrayList<Notebook>();
     List<Marca> marcas = new ArrayList<Marca>();
-    NotebookDao notebookDao = new NotebookDaoImpl();
-    MarcaDao marcaDao = new MarcaDaoImpl();
+    NotebookController notebookController = new NotebookController();
+    MarcaController marcaController = new MarcaController();
 
     /**
      * Creates new form FrmCadNotebook
@@ -39,8 +37,8 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         Connection conexao = new Conexao().getConnection();
 
         txtId.setEnabled(false);
-        lista = notebookDao.getNotebooks();
-        marcas = marcaDao.getMarcas();
+        lista = notebookController.getNotebooks();
+        marcas = marcaController.getMarcas();
         preencheMarcas();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ainda não foram cadastrados Notebooks");
@@ -365,7 +363,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
+        int MarcaId = marcaController.buscarId(cbxMarca.getSelectedItem().toString());
 
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
@@ -379,15 +377,15 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             notebook.setTipo(rbGamer.getText());
         }
 
-        notebookDao.salvarNotebook(notebook);
+        notebookController.salvarNotebook(notebook);
         lista.clear();
-        lista = notebookDao.getNotebooks();
+        lista = notebookController.getNotebooks();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        int MarcaId = marcaDao.buscarId(cbxMarca.getSelectedItem().toString());
+        int MarcaId = marcaController.buscarId(cbxMarca.getSelectedItem().toString());
 
         Notebook notebook = new Notebook();
         notebook.setId(Integer.parseInt(txtId.getText()));
@@ -401,9 +399,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
             notebook.setTipo(rbGamer.getText());
         }
 
-        notebookDao.alterarNotebook(notebook);
+        notebookController.alterarNotebook(notebook);
         lista.clear();
-        lista = notebookDao.getNotebooks();
+        lista = notebookController.getNotebooks();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -411,9 +409,9 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
 
-        notebookDao.excluirNotebook(id);
+        notebookController.excluirNotebook(id);
         lista.clear();
-        lista = notebookDao.getNotebooks();
+        lista = notebookController.getNotebooks();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnExcluirActionPerformed

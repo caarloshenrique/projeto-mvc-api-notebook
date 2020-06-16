@@ -8,10 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class MarcaDaoImpl implements MarcaDao {
-    
+
     Connection conexao = null;
     PreparedStatement pstm = null;
 
@@ -24,7 +23,6 @@ public class MarcaDaoImpl implements MarcaDao {
             pstm.setString(1, marca.getDescricao());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } catch (SQLException insert) {
             System.out.println("Erro: " + insert);
         } finally {
@@ -46,7 +44,6 @@ public class MarcaDaoImpl implements MarcaDao {
             pstm.setInt(2, marca.getId());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Editado com sucesso!");
         } catch (SQLException update) {
             System.out.println("Erro: " + update);
         } finally {
@@ -60,28 +57,22 @@ public class MarcaDaoImpl implements MarcaDao {
 
     @Override
     public void excluirMarca(int id) {
-        int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente exluir o registro?");
-        if (resp == 1) {
-            JOptionPane.showMessageDialog(null, "Você não excluiu o registro");
-        } else {
-            conexao = new Conexao().getConnection();
-            String query = "DELETE FROM tb_marca WHERE id=?";
-            try {
-                pstm = conexao.prepareStatement(query);
-                pstm.setInt(1, id);
-                pstm.execute();
-                pstm.close();
-                JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
-            } catch (SQLException delete) {
-                System.out.println("Erro: " + delete);
-            } finally {
-                try {
-                    conexao.close();
-                } catch (SQLException deleteclose) {
-                    System.out.println("Erro: " + deleteclose);
-                }
-            }
 
+        conexao = new Conexao().getConnection();
+        String query = "DELETE FROM tb_marca WHERE id=?";
+        try {
+            pstm = conexao.prepareStatement(query);
+            pstm.setInt(1, id);
+            pstm.execute();
+            pstm.close();
+        } catch (SQLException delete) {
+            System.out.println("Erro: " + delete);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException deleteclose) {
+                System.out.println("Erro: " + deleteclose);
+            }
         }
     }
 
@@ -114,7 +105,7 @@ public class MarcaDaoImpl implements MarcaDao {
         }
         return lista;
     }
-    
+
     @Override
     public int buscarId(String descricao) {
         ResultSet rs = null;
@@ -138,5 +129,5 @@ public class MarcaDaoImpl implements MarcaDao {
         }
         return id;
     }
-    
+
 }

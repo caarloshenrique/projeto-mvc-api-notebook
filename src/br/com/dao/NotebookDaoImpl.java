@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class NotebookDaoImpl implements NotebookDao {
 
@@ -27,7 +26,6 @@ public class NotebookDaoImpl implements NotebookDao {
             pstm.setString(4, notebook.getTipo());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } catch (SQLException insert) {
             System.out.println("Erro: " + insert);
         } finally {
@@ -53,7 +51,6 @@ public class NotebookDaoImpl implements NotebookDao {
             pstm.setInt(5, notebook.getId());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Editado com sucesso!");
         } catch (SQLException update) {
             System.out.println("Erro: " + update);
         } finally {
@@ -67,29 +64,24 @@ public class NotebookDaoImpl implements NotebookDao {
 
     @Override
     public void excluirNotebook(int id) {
-        int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente exluir o registro?");
-        if (resp == 1) {
-            JOptionPane.showMessageDialog(null, "Você não excluiu o registro");
-        } else {
-            conexao = new Conexao().getConnection();
-            String query = "DELETE FROM tb_notebook WHERE id=?";
-            try {
-                pstm = conexao.prepareStatement(query);
-                pstm.setInt(1, id);
-                pstm.execute();
-                pstm.close();
-                JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
-            } catch (SQLException delete) {
-                System.out.println("Erro: " + delete);
-            } finally {
-                try {
-                    conexao.close();
-                } catch (SQLException deleteclose) {
-                    System.out.println("Erro: " + deleteclose);
-                }
-            }
 
+        conexao = new Conexao().getConnection();
+        String query = "DELETE FROM tb_notebook WHERE id=?";
+        try {
+            pstm = conexao.prepareStatement(query);
+            pstm.setInt(1, id);
+            pstm.execute();
+            pstm.close();
+        } catch (SQLException delete) {
+            System.out.println("Erro: " + delete);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException deleteclose) {
+                System.out.println("Erro: " + deleteclose);
+            }
         }
+
     }
 
     @Override

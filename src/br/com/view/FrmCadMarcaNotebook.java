@@ -6,8 +6,7 @@
 package br.com.view;
 
 import br.com.connection.Conexao;
-import br.com.dao.MarcaDao;
-import br.com.dao.MarcaDaoImpl;
+import br.com.controller.MarcaController;
 import br.com.model.Marca;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     int indice = 0;
     int idincrement = 0;
     List<Marca> lista = new ArrayList<Marca>();
-    MarcaDao marcaDao = new MarcaDaoImpl();
+    MarcaController marcaController = new MarcaController();
 
     /**
      * Creates new form FrmCadMarcaNotebook
@@ -34,7 +33,7 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
         Connection conexao = new Conexao().getConnection();
 
         txtId.setEnabled(false);
-        lista = marcaDao.getMarcas();
+        lista = marcaController.getMarcas();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ainda não foram cadastradas marcas de notebooks");
         } else {
@@ -302,9 +301,9 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
         marca.setId(Integer.parseInt(txtId.getText()));
         marca.setDescricao(txtDescricao.getText());
 
-        marcaDao.salvarMarca(marca);
+        marcaController.salvarMarca(marca);
         lista.clear();
-        lista = marcaDao.getMarcas();
+        lista = marcaController.getMarcas();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -314,9 +313,9 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
         marca.setId(Integer.parseInt(txtId.getText()));
         marca.setDescricao(txtDescricao.getText());
 
-        marcaDao.alterarMarca(marca);
+        marcaController.alterarMarca(marca);
         lista.clear();
-        lista = marcaDao.getMarcas();
+        lista = marcaController.getMarcas();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -324,9 +323,9 @@ public class FrmCadMarcaNotebook extends javax.swing.JInternalFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
 
-        marcaDao.excluirMarca(id);
+        marcaController.excluirMarca(id);
         lista.clear();
-        lista = marcaDao.getMarcas();
+        lista = marcaController.getMarcas();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnExcluirActionPerformed

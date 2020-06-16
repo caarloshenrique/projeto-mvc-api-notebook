@@ -26,7 +26,6 @@ public class UsuarioDaoImpl implements UsuarioDao {
             pstm.setString(3, usuario.getSenha());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         } catch (SQLException insert) {
             System.out.println("Erro: " + insert);
         } finally {
@@ -50,7 +49,6 @@ public class UsuarioDaoImpl implements UsuarioDao {
             pstm.setInt(4, usuario.getId());
             pstm.execute();
             pstm.close();
-            JOptionPane.showMessageDialog(null, "Editado com sucesso!");
         } catch (SQLException update) {
             System.out.println("Erro: " + update);
         } finally {
@@ -64,26 +62,21 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     @Override
     public void excluirUsuario(int id) {
-        int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente exluir o registro?");
-        if (resp == 1) {
-            JOptionPane.showMessageDialog(null, "Você não excluiu o registro");
-        } else {
-            conexao = new Conexao().getConnection();
-            String query = "DELETE FROM tb_usuario WHERE id=?";
+
+        conexao = new Conexao().getConnection();
+        String query = "DELETE FROM tb_usuario WHERE id=?";
+        try {
+            pstm = conexao.prepareStatement(query);
+            pstm.setInt(1, id);
+            pstm.execute();
+            pstm.close();
+        } catch (SQLException delete) {
+            System.out.println("Erro: " + delete);
+        } finally {
             try {
-                pstm = conexao.prepareStatement(query);
-                pstm.setInt(1, id);
-                pstm.execute();
-                pstm.close();
-                JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
-            } catch (SQLException delete) {
-                System.out.println("Erro: " + delete);
-            } finally {
-                try {
-                    conexao.close();
-                } catch (SQLException deleteclose) {
-                    System.out.println("Erro: " + deleteclose);
-                }
+                conexao.close();
+            } catch (SQLException deleteclose) {
+                System.out.println("Erro: " + deleteclose);
             }
         }
     }
@@ -141,19 +134,6 @@ public class UsuarioDaoImpl implements UsuarioDao {
             JOptionPane.showMessageDialog(null, "Usuário inválido!");
         }
         return false;
-    }
-
-    public void criarUsuarioPadrao() {
-        List<Usuario> usuarios = new ArrayList<Usuario>();
-        usuarios = getUsuarios();
-        if (usuarios.isEmpty()) {
-            Usuario novoUsuario = new Usuario();
-            novoUsuario.setNome("admin");
-            novoUsuario.setEmail("admin@ifms.edu.br");
-            novoUsuario.setSenha("admin");
-
-            salvarUsuario(novoUsuario);
-        }
     }
 
 }

@@ -5,11 +5,7 @@
  */
 package br.com.view;
 
-import br.com.dao.UsuarioDao;
-import br.com.dao.UsuarioDaoImpl;
-import br.com.model.Usuario;
-import java.util.ArrayList;
-import java.util.List;
+import br.com.controller.UsuarioController;
 import javax.swing.JOptionPane;
 
 /**
@@ -169,9 +165,9 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-         UsuarioDao usuarioDao = new UsuarioDaoImpl();
+         UsuarioController usuarioController = new UsuarioController();
          boolean existeCredenciais;
-         existeCredenciais = usuarioDao.login(txtNome.getText(), String.valueOf(txtSenha.getPassword()));
+         existeCredenciais = usuarioController.login(txtNome.getText(), String.valueOf(txtSenha.getPassword()));
          
          if (existeCredenciais) {
              new FrmPrincipal().show();

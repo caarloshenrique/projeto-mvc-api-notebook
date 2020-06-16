@@ -6,8 +6,7 @@
 package br.com.view;
 
 import br.com.connection.Conexao;
-import br.com.dao.UsuarioDao;
-import br.com.dao.UsuarioDaoImpl;
+import br.com.controller.UsuarioController;
 import br.com.model.Usuario;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
     int indice = 0;
     int idincrement = 0;
     List<Usuario> lista = new ArrayList<Usuario>();
-    UsuarioDao usuarioDao = new UsuarioDaoImpl();
+    UsuarioController usuarioController = new UsuarioController();
 
     /**
      * Creates new form FrmCadUsuario
@@ -34,7 +33,7 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         Connection conexao = new Conexao().getConnection();
 
         txtId.setEnabled(false);
-        lista = usuarioDao.getUsuarios();
+        lista = usuarioController.getUsuarios();
         if (lista.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ainda não foram cadastrados usuários");
         } else {
@@ -363,9 +362,9 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         usuario.setEmail(txtEmail.getText());
         usuario.setSenha(txtSenha.getText());
 
-        usuarioDao.salvarUsuario(usuario);
+        usuarioController.salvarUsuario(usuario);
         lista.clear();
-        lista = usuarioDao.getUsuarios();
+        lista = usuarioController.getUsuarios();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -377,9 +376,9 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
         usuario.setEmail(txtEmail.getText());
         usuario.setSenha(txtSenha.getText());
 
-        usuarioDao.alterarUsuario(usuario);
+        usuarioController.alterarUsuario(usuario);
         lista.clear();
-        lista = usuarioDao.getUsuarios();
+        lista = usuarioController.getUsuarios();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -387,9 +386,9 @@ public class FrmCadUsuario extends javax.swing.JInternalFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         int id = (Integer.parseInt(txtId.getText()));
 
-        usuarioDao.excluirUsuario(id);
+        usuarioController.excluirUsuario(id);
         lista.clear();
-        lista = usuarioDao.getUsuarios();
+        lista = usuarioController.getUsuarios();
         indice = lista.size() - 1;
         mostrarDados();
     }//GEN-LAST:event_btnExcluirActionPerformed
