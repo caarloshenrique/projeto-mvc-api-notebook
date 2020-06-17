@@ -3,9 +3,11 @@ package br.com.controller;
 import br.com.dao.UsuarioDao;
 import br.com.dao.UsuarioDaoImpl;
 import br.com.model.Usuario;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
 
 public class UsuarioController {
 
@@ -73,6 +75,14 @@ public class UsuarioController {
             novoUsuario.setSenha("admin");
 
             salvarUsuario(novoUsuario);
+        }
+    }
+
+    public void gerarRelatorioUsuario(String nomeUsuario) throws JRException, SQLException {
+        if (!nomeUsuario.equals("") && !nomeUsuario.equals("--Selecione--")) {
+            usuarioDao.getUsuario(nomeUsuario);
+        } else {
+            JOptionPane.showMessageDialog(null, "Informe um usuário para gerar o relatório!");
         }
     }
 }

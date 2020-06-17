@@ -6,8 +6,6 @@
 package br.com.view;
 
 import br.com.controller.NotebookController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 
@@ -18,7 +16,7 @@ import net.sf.jasperreports.engine.JRException;
 public class FrmPrincipal extends javax.swing.JFrame {
 
     NotebookController notebookController = new NotebookController();
-    
+
     public FrmPrincipal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -196,7 +194,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemMarcaNotebookActionPerformed
 
     private void menuItemUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemUsuarioActionPerformed
-        FrmCadUsuario usuario  = new FrmCadUsuario();
+        FrmCadUsuario usuario = new FrmCadUsuario();
         Desktop.add(usuario);
         usuario.setVisible(true);
     }//GEN-LAST:event_menuItemUsuarioActionPerformed
@@ -218,11 +216,17 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemRelatorioGeralNotebooksActionPerformed
 
     private void menuItemRelatorioNotebooksGamerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioNotebooksGamerActionPerformed
-        // TODO add your handling code here:
+        try {
+            notebookController.gerarRelatorioNotebookGamer();
+        } catch (JRException erro) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + erro);
+        }
     }//GEN-LAST:event_menuItemRelatorioNotebooksGamerActionPerformed
 
     private void menuItemRelatorioUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioUsuarioNomeActionPerformed
-        // TODO add your handling code here:
+        FrmRelatorioUsuario relatorioUsuario = new FrmRelatorioUsuario();
+        Desktop.add(relatorioUsuario);
+        relatorioUsuario.setVisible(true);
     }//GEN-LAST:event_menuItemRelatorioUsuarioNomeActionPerformed
 
     /**

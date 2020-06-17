@@ -1,14 +1,23 @@
 package br.com.dao;
 
 import br.com.connection.Conexao;
+import br.com.model.NotebookReport;
 import br.com.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class UsuarioDaoImpl implements UsuarioDao {
 
@@ -134,6 +143,43 @@ public class UsuarioDaoImpl implements UsuarioDao {
             JOptionPane.showMessageDialog(null, "Usuário inválido!");
         }
         return false;
+    }
+
+    @Override
+    public void getUsuario(String nomeUsuario) {
+        ResultSet rs = null;
+        List<NotebookReport> lista = new ArrayList<NotebookReport>();
+        conexao = new Conexao().getConnection();
+        String query = "SELECT id, nome, email FROM tb_usuario WHERE nome=?";
+        try {
+            pstm = conexao.prepareStatement(query);
+            pstm.setString(1, nomeUsuario);
+            rs = pstm.executeQuery();
+
+            HashMap filtro = new HashMap();
+            filtro.put("paramNome", nomeUsuario);
+            String CAMINHO_RELATORIO = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\ProjetoMVCAPI\\src\\br\\com\\reports\\ReportUsuario.jasper";
+            gerarRelatorioResultSet(rs, filtro, CAMINHO_RELATORIO);
+        } catch (SQLException errolistar) {
+            System.out.println("Erro: " + errolistar);
+        } catch (JRException ex) {
+            Logger.getLogger(NotebookDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException errofechar) {
+                System.out.println("Erro: " + errofechar);
+            }
+        }
+    }
+
+    @Override
+    public void gerarRelatorioResultSet(ResultSet rs, HashMap filtro, String CAMINHO_RELATORIO) throws JRException {
+        JRResultSetDataSource jrrs = new JRResultSetDataSource(rs);
+
+        JasperPrint imprimir = JasperFillManager.fillReport(CAMINHO_RELATORIO, filtro, jrrs);
+        JasperViewer visualizar = new JasperViewer(imprimir, false);
+        visualizar.setVisible(true);
     }
 
 }

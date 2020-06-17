@@ -7,14 +7,9 @@ import br.com.dao.NotebookDaoImpl;
 import br.com.model.Notebook;
 import br.com.model.NotebookReport;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class NotebookController {
 
@@ -77,13 +72,24 @@ public class NotebookController {
         return lista;
     }
 
-    public void gerarRelatorioGeral() throws JRException {
-        HashMap filtro = new HashMap();
-        JRBeanCollectionDataSource colecao = new JRBeanCollectionDataSource(getListaNotebooks(), false);
+    public List<NotebookReport> getListaNotebooksGamer() {
+        List<NotebookReport> lista = new ArrayList<NotebookReport>();
+        lista = notebookDao.getNotebooksGamer();
+        return lista;
+    }
 
-        JasperPrint imprimir = JasperFillManager.fillReport("C:\\Users\\Carlos\\Documents\\NetBeansProjects\\ProjetoMVCAPI\\src\\br\\com\\reports\\ReportNotebooks.jasper", filtro, colecao);
-        JasperViewer visualizar = new JasperViewer(imprimir, false);
-        visualizar.setVisible(true);
+    public void gerarRelatorioGeral() throws JRException {
+        String CAMINHO_RELATORIO = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\ProjetoMVCAPI\\src\\br\\com\\reports\\ReportNotebooks.jasper";
+        List<NotebookReport> lista = new ArrayList<NotebookReport>();
+        lista = getListaNotebooks();
+        notebookDao.gerarRelatorioCollection(lista, CAMINHO_RELATORIO);
+    }
+
+    public void gerarRelatorioNotebookGamer() throws JRException {
+        String CAMINHO_RELATORIO = "C:\\Users\\Carlos\\Documents\\NetBeansProjects\\ProjetoMVCAPI\\src\\br\\com\\reports\\ReportNotebookGamer.jasper";
+        List<NotebookReport> lista = new ArrayList<NotebookReport>();
+        lista = getListaNotebooksGamer();
+        notebookDao.gerarRelatorioCollection(lista, CAMINHO_RELATORIO);
     }
 
     public List<NotebookReport> construirObjetoNotebookReports(List<Notebook> listaNotebooks) {

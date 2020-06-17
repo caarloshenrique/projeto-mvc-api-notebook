@@ -129,7 +129,7 @@ public class MarcaDaoImpl implements MarcaDao {
         }
         return id;
     }
-    
+
     @Override
     public String buscarDescricao(int id) {
         ResultSet rs = null;

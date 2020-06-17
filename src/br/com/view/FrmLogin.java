@@ -165,16 +165,16 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-         UsuarioController usuarioController = new UsuarioController();
-         boolean existeCredenciais;
-         existeCredenciais = usuarioController.login(txtNome.getText(), String.valueOf(txtSenha.getPassword()));
-         
-         if (existeCredenciais) {
-             new FrmPrincipal().show();
-             this.dispose();
-         } else {
-             JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos", "Erro", JOptionPane.ERROR_MESSAGE);
-         }
+        UsuarioController usuarioController = new UsuarioController();
+        boolean existeCredenciais;
+        existeCredenciais = usuarioController.login(txtNome.getText(), String.valueOf(txtSenha.getPassword()));
+
+        if (existeCredenciais) {
+            new FrmPrincipal().show();
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuário ou senha incorretos", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**

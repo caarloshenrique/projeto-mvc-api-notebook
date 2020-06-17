@@ -8,7 +8,7 @@ public class Executavel {
     public static void main(String[] args) {
         UsuarioController usuario = new UsuarioController();
         usuario.criarUsuarioPadrao();
-        
+
         new FrmLogin().setVisible(true);
     }
 }

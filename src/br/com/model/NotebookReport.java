@@ -1,6 +1,7 @@
 package br.com.model;
 
 public class NotebookReport {
+
     private int id;
     private String modelo;
     private String descricao;

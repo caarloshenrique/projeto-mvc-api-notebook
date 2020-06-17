@@ -53,7 +53,7 @@ public class MarcaController {
         int id = marcaDao.buscarId(descricao);
         return id;
     }
-    
+
     public String buscarDescricao(int id) {
         String descricao = marcaDao.buscarDescricao(id);
         return descricao;

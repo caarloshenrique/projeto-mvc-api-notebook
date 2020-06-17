@@ -1,6 +1,7 @@
 package br.com.dao;
 
 import br.com.model.Notebook;
+import br.com.model.NotebookReport;
 import java.util.List;
 
 public interface NotebookDao {
@@ -12,4 +13,8 @@ public interface NotebookDao {
     public void excluirNotebook(int id);
 
     public List<Notebook> getNotebooks();
+
+    public List<NotebookReport> getNotebooksGamer();
+
+    public void gerarRelatorioCollection(List list, String CAMINHO_RELATORIO);
 }

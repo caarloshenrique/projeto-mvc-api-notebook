@@ -2,12 +2,21 @@ package br.com.dao;
 
 import br.com.connection.Conexao;
 import br.com.model.Notebook;
+import br.com.model.NotebookReport;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class NotebookDaoImpl implements NotebookDao {
 
@@ -115,5 +124,53 @@ public class NotebookDaoImpl implements NotebookDao {
             }
         }
         return lista;
+    }
+
+    @Override
+    public List<NotebookReport> getNotebooksGamer() {
+        ResultSet rs = null;
+        List<NotebookReport> lista = new ArrayList<NotebookReport>();
+        conexao = new Conexao().getConnection();
+        String query = "SELECT n.id, n.modelo, m.descricao, n.serie, n.tipo FROM tb_notebook n, tb_marca m WHERE n.marca = m.id AND n.tipo = 'Gamer'";
+        try {
+            pstm = conexao.prepareStatement(query);
+            rs = pstm.executeQuery();
+            rs.first();
+            do {
+                NotebookReport notebook = new NotebookReport();
+                notebook.setId(rs.getInt("n.id"));
+                notebook.setModelo(rs.getString("n.modelo"));
+                notebook.setDescricao(rs.getString("m.descricao"));
+                notebook.setSerie(rs.getString("n.serie"));
+                notebook.setTipo(rs.getString("n.tipo"));
+
+                lista.add(notebook);
+
+            } while (rs.next());
+        } catch (SQLException errolistar) {
+            System.out.println("Erro: " + errolistar);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException errofechar) {
+                System.out.println("Erro: " + errofechar);
+            }
+        }
+        return lista;
+    }
+
+    @Override
+    public void gerarRelatorioCollection(List lista, String CAMINHO_RELATORIO) {
+        HashMap filtro = new HashMap();
+        JRBeanCollectionDataSource colecao = new JRBeanCollectionDataSource(lista, false);
+
+        JasperPrint imprimir = null;
+        try {
+            imprimir = JasperFillManager.fillReport(CAMINHO_RELATORIO, filtro, colecao);
+        } catch (JRException ex) {
+            Logger.getLogger(NotebookDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JasperViewer visualizar = new JasperViewer(imprimir, false);
+        visualizar.setVisible(true);
     }
 }
