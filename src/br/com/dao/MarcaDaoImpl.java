@@ -129,5 +129,29 @@ public class MarcaDaoImpl implements MarcaDao {
         }
         return id;
     }
+    
+    @Override
+    public String buscarDescricao(int id) {
+        ResultSet rs = null;
+        conexao = new Conexao().getConnection();
+        String query = "SELECT* FROM tb_marca WHERE id = ?";
+        String descricao = null;
+        try {
+            pstm = conexao.prepareStatement(query);
+            pstm.setInt(1, id);
+            rs = pstm.executeQuery();
+            rs.first();
+            descricao = rs.getString("descricao");
+        } catch (SQLException update) {
+            System.out.println("Erro: " + update);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException updateclose) {
+                System.out.println("Erro: " + updateclose);
+            }
+        }
+        return descricao;
+    }
 
 }

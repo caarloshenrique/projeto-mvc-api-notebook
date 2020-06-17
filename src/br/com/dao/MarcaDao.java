@@ -14,4 +14,6 @@ public interface MarcaDao {
     public List<Marca> getMarcas();
 
     public int buscarId(String descricao);
+    
+    public String buscarDescricao(int id);
 }

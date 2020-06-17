@@ -5,15 +5,20 @@
  */
 package br.com.view;
 
+import br.com.controller.NotebookController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+
 /**
  *
  * @author Carlos
  */
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmPrincipal
-     */
+    NotebookController notebookController = new NotebookController();
+    
     public FrmPrincipal() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -35,6 +40,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
         menuItemNotebook = new javax.swing.JMenuItem();
         menuItemMarcaNotebook = new javax.swing.JMenuItem();
         menuItemUsuario = new javax.swing.JMenuItem();
+        menuRelatorios = new javax.swing.JMenu();
+        menuItemRelatorioGeralNotebooks = new javax.swing.JMenuItem();
+        menuItemRelatorioNotebooksGamer = new javax.swing.JMenuItem();
+        menuItemRelatorioUsuarioNome = new javax.swing.JMenuItem();
         menuUtilitarios = new javax.swing.JMenu();
         menuItemCalculadora = new javax.swing.JMenuItem();
         menuItemBlocoNotas = new javax.swing.JMenuItem();
@@ -93,8 +102,40 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         menuPrincipal.add(menuCadastro);
 
+        menuRelatorios.setText("Relatórios");
+
+        menuItemRelatorioGeralNotebooks.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItemRelatorioGeralNotebooks.setText("Relatório Geral de Notebooks");
+        menuItemRelatorioGeralNotebooks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioGeralNotebooksActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioGeralNotebooks);
+
+        menuItemRelatorioNotebooksGamer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        menuItemRelatorioNotebooksGamer.setText("Relatório de Notebooks Gamer");
+        menuItemRelatorioNotebooksGamer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioNotebooksGamerActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioNotebooksGamer);
+
+        menuItemRelatorioUsuarioNome.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        menuItemRelatorioUsuarioNome.setText("Relatório de Usuário por nome");
+        menuItemRelatorioUsuarioNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRelatorioUsuarioNomeActionPerformed(evt);
+            }
+        });
+        menuRelatorios.add(menuItemRelatorioUsuarioNome);
+
+        menuPrincipal.add(menuRelatorios);
+
         menuUtilitarios.setText("Utilitários");
 
+        menuItemCalculadora.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         menuItemCalculadora.setText("Calculadora");
         menuItemCalculadora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +144,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         });
         menuUtilitarios.add(menuItemCalculadora);
 
+        menuItemBlocoNotas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
         menuItemBlocoNotas.setText("Bloco de notas");
         menuItemBlocoNotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,6 +209,22 @@ public class FrmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuItemBlocoNotasActionPerformed
 
+    private void menuItemRelatorioGeralNotebooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioGeralNotebooksActionPerformed
+        try {
+            notebookController.gerarRelatorioGeral();
+        } catch (JRException erro) {
+            JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + erro);
+        }
+    }//GEN-LAST:event_menuItemRelatorioGeralNotebooksActionPerformed
+
+    private void menuItemRelatorioNotebooksGamerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioNotebooksGamerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemRelatorioNotebooksGamerActionPerformed
+
+    private void menuItemRelatorioUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRelatorioUsuarioNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemRelatorioUsuarioNomeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,8 +268,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemCalculadora;
     private javax.swing.JMenuItem menuItemMarcaNotebook;
     private javax.swing.JMenuItem menuItemNotebook;
+    private javax.swing.JMenuItem menuItemRelatorioGeralNotebooks;
+    private javax.swing.JMenuItem menuItemRelatorioNotebooksGamer;
+    private javax.swing.JMenuItem menuItemRelatorioUsuarioNome;
     private javax.swing.JMenuItem menuItemUsuario;
     private javax.swing.JMenuBar menuPrincipal;
+    private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuSair;
     private javax.swing.JMenu menuUtilitarios;
     // End of variables declaration//GEN-END:variables

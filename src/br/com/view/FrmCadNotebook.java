@@ -459,7 +459,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
     public void mostrarDados() {
         txtId.setText("" + lista.get(indice).getId());
         txtModelo.setText(lista.get(indice).getModelo());
-        cbxMarca.setSelectedItem(buscarDescricaoMarca(lista.get(indice).getMarca()));
+        cbxMarca.setSelectedItem(marcaController.buscarDescricao(lista.get(indice).getMarca()));
         txtSerie.setText(lista.get(indice).getSerie());
         if (lista.get(indice).getTipo().equals("Convencional")) {
             rbConvencional.setSelected(true);
@@ -477,7 +477,7 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
 
         modelo.setNumRows(0);
         for (int i = 0; i < lista.size(); i++) {
-            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getModelo(), buscarDescricaoMarca(lista.get(i).getMarca()), lista.get(i).getSerie(), lista.get(i).getTipo()});
+            modelo.addRow(new Object[]{lista.get(i).getId(), lista.get(i).getModelo(), marcaController.buscarDescricao(lista.get(i).getMarca()), lista.get(i).getSerie(), lista.get(i).getTipo()});
         }
     }
 
@@ -486,16 +486,6 @@ public class FrmCadNotebook extends javax.swing.JInternalFrame {
         for (int i = 0; i < marcas.size(); i++) {
             cbxMarca.addItem(marcas.get(i).getDescricao());
         }
-    }
-
-    public String buscarDescricaoMarca(int id) {
-        String marca = null;
-        for (int i = 0; i < marcas.size(); i++) {
-            if (marcas.get(i).getId() == id) {
-                marca = marcas.get(i).getDescricao();
-            }
-        }
-        return marca;
     }
 
     public void preencherDadosFormulario() {
