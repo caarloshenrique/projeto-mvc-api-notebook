@@ -5,9 +5,9 @@
 
 O projeto foi feito utilizando as seguintes tecnologias:
 
-- [Java 8](https://www.java.com/pt_BR/download/faq/java8.xml)
+- [Java](https://www.java.com/pt_BR/download/faq/java8.xml)
 - [Java Swing](https://docs.oracle.com/javase/tutorial/uiswing/)
-- [MySQL 5](https://www.mysql.com/)
+- [MySQL](https://www.mysql.com/)
 - [JasperReports](https://community.jaspersoft.com/project/jasperreports-library)
 {...}
 
